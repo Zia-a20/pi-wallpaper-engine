@@ -1,0 +1,52 @@
+name: ci
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    # 插件依赖 Windows 的注册表与 libraryfolders.vdf 发现逻辑；
+    # 下面这 4 个测试本身是纯桩/自造数据，但保持与目标平台一致，避免路径差异。
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [20, 22]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: 语法检查
+        run: |
+          node --check main.js
+          node --check wallpaper-source.js
+          node --check renderer/index.mjs
+          node --check tests/test-legacy.js
+          node --check tests/test-renderer.js
+          node --check tests/test-startup-sweep.js
+          node --check tests/test-unload-inflight.js
+
+      - name: manifest 校验
+        run: |
+          node -e "const m=JSON.parse(require('fs').readFileSync('manifest.json','utf8'));const re=/^[a-z0-9]+(\.[a-z0-9_-]+)+$/;if(!re.test(m.id))throw new Error('bad id: '+m.id);if(!m.main)throw new Error('missing main');if(!require('fs').existsSync(m.main))throw new Error('main not found');if(m.renderer&&!require('fs').existsSync(m.renderer))throw new Error('renderer not found');console.log('manifest ok:',m.id,m.version)"
+
+      - name: 单元测试（不依赖本机壁纸库）
+        run: |
+          node tests/test-legacy.js
+          node tests/test-renderer.js
+          node tests/test-startup-sweep.js
+          node tests/test-unload-inflight.js
+
+      - name: 打包产物完整性
+        run: node tests/pack-check.js
+
+  # 依赖真实 Wallpaper Engine 壁纸库的测试放在 tests/manual/，不进 CI：
+  #   test-main.js / test-payload.js / test-timeout.js 需要本机已安装 WE 并订阅过壁纸，
+  #   且会真实读写上百 MB 的载荷缓存。

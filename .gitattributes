@@ -1,0 +1,22 @@
+* text=auto
+
+# 源码统一用 LF 存储，检出时由 Git 按平台决定。
+# 这样 Windows 上编辑、Linux/CI 上跑都不会产生整文件 diff。
+*.js      text eol=lf
+*.mjs     text eol=lf
+*.json    text eol=lf
+*.yml     text eol=lf
+*.md      text eol=lf
+
+# 第三方引擎是压缩产物，绝不能做换行转换或文本 diff —— 转了会破坏字节。
+vendor/webwallgl.global.min.js  binary
+
+# 打包产物是二进制 zip，永远不要文本处理。
+*.piplug  binary
+
+# 没有扩展名的文本文件也要显式声明，否则 Windows 上仍会报
+# "LF will be replaced by CRLF"（不影响结果，但会把首次提交的日志弄得很吵）。
+.gitattributes  text eol=lf
+.gitignore      text eol=lf
+*.txt           text eol=lf
+LICENSE         text eol=lf

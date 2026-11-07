@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "id": "io.github.zia-a20.wallpaper-engine",
+  "name": "Wallpaper Engine 动态背景",
+  "version": "1.0.0",
+  "description": "把本机 Wallpaper Engine 壁纸作为 PI 主界面的动态背景：scene 用 WebGL 引擎实时渲染 scene.pkg，video 直接解码 mp4，web 用 4K 原图，支持暗化、玻璃模糊与开关。",
+  "main": "main.js",
+  "permissions": [
+    "renderer.extension"
+  ],
+  "renderer": "renderer/index.mjs",
+  "rendererActions": [
+    "plugin.call"
+  ],
+  "rendererCallMethods": [
+    "settings.get",
+    "settings.set",
+    "library.list",
+    "library.scan",
+    "wallpaper.select",
+    "assets.meta",
+    "assets.chunk",
+    "assets.payload",
+    "assets.cleanup"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "id": "io.github.zia-a20.wallpaper-engine.status",
+        "title": "Wallpaper Engine: 查看壁纸库状态",
+        "keywords": [
+          "wallpaper",
+          "壁纸",
+          "背景"
+        ]
+      }
+    ]
+  },
+  "engines": {
+    "piDesktop": ">=0.20.1"
+  },
+  "activationEvents": [
+    "onStartup",
+    "onCommand:io.github.zia-a20.wallpaper-engine.status"
+  ]
+}

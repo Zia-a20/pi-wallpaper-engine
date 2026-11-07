@@ -1,0 +1,26 @@
+# 依赖与构建产物
+node_modules/
+dist/
+
+# 壁纸载荷缓存：运行时从本机 Wallpaper Engine 素材解出来的，
+# 体积可达上百 MB，且内容是受版权保护的创意工坊素材，绝不能进版本库。
+payload/
+
+# 系统 / 编辑器杂项
+.DS_Store
+Thumbs.db
+*.log
+.vscode/
+.idea/
+
+# 本地环境变量（万一将来用到）
+.env
+.env.*
+
+# 测试用假 HOME 目录里的运行时产物（载荷缓存、预览图等），
+# 里面会是真实壁纸解出来的画面，绝不进版本库。
+tests/sandbox-home/.pi-wallpaper-engine/cache/
+
+# 测试用的假 HOME 整个目录都是运行时产物：里面会写入真实壁纸的 id、
+# 载荷缓存、预览图（都是本机 Wallpaper Engine 素材）。只保留目录本身的说明。
+tests/sandbox-home/.pi-wallpaper-engine/
