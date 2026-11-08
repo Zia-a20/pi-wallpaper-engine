@@ -26,7 +26,7 @@ fs.writeFileSync(
   "utf8"
 );
 
-const PLUGIN_DIR = path.resolve(__dirname, "..");
+const PLUGIN_DIR = path.resolve(__dirname, "..", "..");
 
 // ---------------------------------------------------------------- DOM 桩
 class FakeNode {
