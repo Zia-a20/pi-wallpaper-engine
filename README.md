@@ -28,7 +28,7 @@
   与本地工程（`steamapps/common/wallpaper_engine/projects/*`）。
 - **和 WE 里看到的是同一个画面，而且是活的**：
   - `scene` 类：把 `scene.pkg` 整个喂给 WebGL 引擎（`vendor/webwallgl.global.min.js`）
-    实时合成，30fps 持续渲染，分辨率和 WE 一致；
+    实时合成，24fps 持续渲染（`SCENE_FPS`，比 60 帧省得多，见下文省电一节），分辨率和 WE 一致；
   - `video` 类：把 mp4 原文件解成 Blob 直接 `<video loop muted autoplay>` 播放；
   - `web` 类：用网页里的大图原图（实测 3840×2160）。
 - **可读性优先**：压暗强度、玻璃不透明度、背景模糊三个滑杆实时生效，设置自动保存到
@@ -115,7 +115,7 @@ DSH 那样起一个本地 HTTP 服务再塞 iframe。
 4. **回落**：任何一步失败（引擎报错、非 PKGV、I/O 失败）都会回落到 `preview.gif`
    的分块通道，保证不会白屏。
 
-首帧实测：42MB scene 约 1.8 秒（载荷 0.57s + 解码 0.13s + 引擎装配 1.1s），30fps。
+首帧实测：42MB scene 约 1.8 秒（载荷 0.57s + 解码 0.13s + 引擎装配 1.1s）。
 
 ### 载荷缓存
 
